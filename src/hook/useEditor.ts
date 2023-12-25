@@ -15,13 +15,11 @@ const useEditor = (initialValue: string = "") => {
   const getRange = () => getSelection()?.getRangeAt(0);
 
   const isFormatActive = (tag: FormatTypes): boolean => {
-    console.log(tag);
     const range = getRange();
     const parentElement = range?.commonAncestorContainer.parentElement;
     return parentElement?.tagName === tag.toUpperCase() || false;
   };
 
-  // Function to apply or remove a specific format (e.g., bold) to/from the selection
   function applyFormat(tag: FormatTypes) {
     const editor = editorRef.current;
 
@@ -55,7 +53,6 @@ const useEditor = (initialValue: string = "") => {
     setEditorContent(editor.innerHTML);
   }
 
-  // Function to reset the selection to the end of the editor
   const resetSelection = () => {
     const editor = editorRef.current;
     if (editor) {
