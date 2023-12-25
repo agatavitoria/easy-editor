@@ -1,26 +1,41 @@
-import { ChangeEvent, useState } from "react";
-import { EasyEditorInput } from "./styles";
+import {
+  Actions,
+  ButtonAction,
+  Container,
+  ContainerInput,
+  EasyEditorInput,
+  Layout,
+} from "./styles";
+import { BoldIcon, ItalicIcon, UnderlineIcon } from "../../icons";
+import type { EasyEditorProps } from "./types";
+import useEditor from "../../hook/useEditor";
 
-type Props = {
-  placeholder?: string;
-  initialValue?: string;
-  readOnly?: boolean;
-};
-
-function EasyEditor({ placeholder, initialValue, readOnly }: Props) {
-  const [inputValue, setInputValue] = useState<string>(initialValue || "");
-
-  function handleChange(event: ChangeEvent<HTMLTextAreaElement>) {
-    setInputValue(event.target.value);
-  }
+function EasyEditor({ placeholder, initialValue, readOnly }: EasyEditorProps) {
+  const { editorContent, editorRef, applyFormat } = useEditor(initialValue);
 
   return (
-    <EasyEditorInput
-      placeholder={placeholder}
-      value={inputValue}
-      onChange={handleChange}
-      readOnly={readOnly}
-    />
+    <Layout>
+      <Container>
+        <Actions>
+          <ButtonAction onClick={() => applyFormat("b")}>
+            <BoldIcon />
+          </ButtonAction>
+          <ButtonAction onClick={() => applyFormat("i")}>
+            <ItalicIcon />
+          </ButtonAction>
+          <ButtonAction onClick={() => applyFormat("u")}>
+            <UnderlineIcon />
+          </ButtonAction>
+        </Actions>
+        <ContainerInput>
+          <EasyEditorInput
+            ref={editorRef}
+            dangerouslySetInnerHTML={{ __html: editorContent }}
+            contentEditable={!readOnly}
+          />
+        </ContainerInput>
+      </Container>
+    </Layout>
   );
 }
 
